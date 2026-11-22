@@ -1,0 +1,12 @@
+{
+  "total_images_processed": 500,
+  "mean_vessel_density": 0.13313784790039063,
+  "mean_skeleton_pixels": 3100.824,
+  "fov_counts": {
+    "6mm": 300,
+    "3mm": 200
+  },
+  "mean_artery_dice": 0.4150187276793187,
+  "mean_vein_dice": 0.41613472764271836,
+  "mean_capillary_dice": 0.39193032396331023
+}

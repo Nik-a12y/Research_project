@@ -1,5 +1,691 @@
 {
-    "total_images_processed": 300,
-    "mean_vessel_density": 0.1129986572265625,
-    "mean_skeleton_pixels": 2643.213333333333
+  "total_images_processed": 500,
+  "mean_vessel_density": 0.13313784790039063,
+  "mean_skeleton_pixels": 3100.824,
+  "fov_counts": {
+    "6mm": 300,
+    "3mm": 200
+  },
+  "mean_artery_dice": 0.4150187276793187,
+  "mean_vein_dice": 0.41613472764271836,
+  "mean_capillary_dice": 0.39193032396331023,
+  "experiment": "Frozen ResNet18 CNN + vascular topology ablation",
+  "cnn_embedding_dim": 512,
+  "cross_validation": "Nested StratifiedKFold(5 outer, 4 inner), stratified by FOV and class",
+  "class_weight": "balanced",
+  "random_state": 42,
+  "excluded_demographics": [
+    "age",
+    "sex"
+  ],
+  "cnn": {
+    "architecture": "torchvision.models.resnet18",
+    "weights": "ResNet18_Weights.IMAGENET1K_V1",
+    "embedding_dim": 512,
+    "classifier_head": "removed; use average-pool output",
+    "embedding_preprocessing": "ResNet18_Weights.IMAGENET1K_V1.transforms()",
+    "input": "grayscale OCTA repeated to RGB after shared 256x256 percentile normalization"
+  },
+  "pca_components": 32,
+  "tasks": {
+    "binary": {
+      "class_names": [
+        "NORMAL",
+        "DR"
+      ],
+      "models": {
+        "cnn_baseline": {
+          "model": "ExtraTreesClassifier",
+          "metrics": {
+            "accuracy": 0.7428571428571429,
+            "macro_precision": 0.7015615962984384,
+            "macro_recall": 0.803722609561753,
+            "macro_f1": 0.7008827563569009,
+            "dr_precision": 0.43609022556390975,
+            "dr_recall": 0.90625,
+            "dr_f2": 0.7455012853470437
+          },
+          "fold_metrics": [
+            {
+              "accuracy": 0.7936507936507936,
+              "macro_precision": 0.7266304347826087,
+              "macro_recall": 0.8406862745098038,
+              "macro_f1": 0.7428571428571429,
+              "dr_precision": 0.4782608695652174,
+              "dr_recall": 0.9166666666666666,
+              "dr_f2": 0.7746478873239436
+            },
+            {
+              "accuracy": 0.7777777777777778,
+              "macro_precision": 0.7141304347826087,
+              "macro_recall": 0.803076923076923,
+              "macro_f1": 0.7277777777777779,
+              "dr_precision": 0.4782608695652174,
+              "dr_recall": 0.8461538461538461,
+              "dr_f2": 0.7333333333333333
+            },
+            {
+              "accuracy": 0.7301587301587301,
+              "macro_precision": 0.6845114345114345,
+              "macro_recall": 0.773076923076923,
+              "macro_f1": 0.6843501326259946,
+              "dr_precision": 0.4230769230769231,
+              "dr_recall": 0.8461538461538461,
+              "dr_f2": 0.7051282051282052
+            },
+            {
+              "accuracy": 0.7142857142857143,
+              "macro_precision": 0.6921906693711968,
+              "macro_recall": 0.7915384615384615,
+              "macro_f1": 0.6785714285714286,
+              "dr_precision": 0.41379310344827586,
+              "dr_recall": 0.9230769230769231,
+              "dr_f2": 0.7407407407407407
+            },
+            {
+              "accuracy": 0.6984126984126984,
+              "macro_precision": 0.703125,
+              "macro_recall": 0.81,
+              "macro_f1": 0.671604938271605,
+              "dr_precision": 0.40625,
+              "dr_recall": 1.0,
+              "dr_f2": 0.7738095238095238
+            }
+          ],
+          "fold_fov_dr_thresholds": [
+            {
+              "3mm": 0.15,
+              "6mm": 0.28
+            },
+            {
+              "3mm": 0.16999999999999998,
+              "6mm": 0.26
+            },
+            {
+              "3mm": 0.16,
+              "6mm": 0.26
+            },
+            {
+              "3mm": 0.16999999999999998,
+              "6mm": 0.25
+            },
+            {
+              "3mm": 0.16,
+              "6mm": 0.25
+            }
+          ],
+          "thresholds_by_fov": {
+            "3mm": 0.18,
+            "6mm": 0.24
+          },
+          "confusion_matrix_oof": [
+            [
+              176,
+              75
+            ],
+            [
+              6,
+              58
+            ]
+          ],
+          "class_names": [
+            "NORMAL",
+            "DR"
+          ],
+          "pca_components": 32,
+          "pca_fit": "training rows only within each inner/outer CV fold",
+          "fov_normalization": "z-score fitted separately per FOV within each training fold",
+          "probability_calibration": "per-FOV one-vs-rest sigmoid fitted on out-of-fold probabilities"
+        },
+        "topology_only": {
+          "model": "ExtraTreesClassifier",
+          "metrics": {
+            "accuracy": 0.6476190476190476,
+            "macro_precision": 0.6284013605442177,
+            "macro_recall": 0.6973979083665338,
+            "macro_f1": 0.604508590754335,
+            "dr_precision": 0.3401360544217687,
+            "dr_recall": 0.78125,
+            "dr_f2": 0.6203473945409429
+          },
+          "fold_metrics": [
+            {
+              "accuracy": 0.6825396825396826,
+              "macro_precision": 0.6325363825363826,
+              "macro_recall": 0.7083333333333333,
+              "macro_f1": 0.6232057416267942,
+              "dr_precision": 0.34615384615384615,
+              "dr_recall": 0.75,
+              "dr_f2": 0.6081081081081081
+            },
+            {
+              "accuracy": 0.6984126984126984,
+              "macro_precision": 0.6362179487179487,
+              "macro_recall": 0.6961538461538461,
+              "macro_f1": 0.6365016702095354,
+              "dr_precision": 0.375,
+              "dr_recall": 0.6923076923076923,
+              "dr_f2": 0.5921052631578947
+            },
+            {
+              "accuracy": 0.5555555555555556,
+              "macro_precision": 0.6585365853658537,
+              "macro_recall": 0.72,
+              "macro_f1": 0.5462962962962963,
+              "dr_precision": 0.3170731707317073,
+              "dr_recall": 1.0,
+              "dr_f2": 0.6989247311827957
+            },
+            {
+              "accuracy": 0.6349206349206349,
+              "macro_precision": 0.5862785862785863,
+              "macro_recall": 0.6276923076923078,
+              "macro_f1": 0.572944297082228,
+              "dr_precision": 0.3076923076923077,
+              "dr_recall": 0.6153846153846154,
+              "dr_f2": 0.5128205128205128
+            },
+            {
+              "accuracy": 0.6666666666666666,
+              "macro_precision": 0.6530303030303031,
+              "macro_recall": 0.7330769230769231,
+              "macro_f1": 0.6293079293919865,
+              "dr_precision": 0.36666666666666664,
+              "dr_recall": 0.8461538461538461,
+              "dr_f2": 0.6707317073170732
+            }
+          ],
+          "fold_fov_dr_thresholds": [
+            {
+              "3mm": 0.16999999999999998,
+              "6mm": 0.21
+            },
+            {
+              "3mm": 0.22999999999999998,
+              "6mm": 0.21
+            },
+            {
+              "3mm": 0.13999999999999999,
+              "6mm": 0.21
+            },
+            {
+              "3mm": 0.22,
+              "6mm": 0.19
+            },
+            {
+              "3mm": 0.16,
+              "6mm": 0.19999999999999998
+            }
+          ],
+          "thresholds_by_fov": {
+            "3mm": 0.15,
+            "6mm": 0.19999999999999998
+          },
+          "confusion_matrix_oof": [
+            [
+              154,
+              97
+            ],
+            [
+              14,
+              50
+            ]
+          ],
+          "class_names": [
+            "NORMAL",
+            "DR"
+          ],
+          "pca_components": null,
+          "pca_fit": "training rows only within each inner/outer CV fold",
+          "fov_normalization": "z-score fitted separately per FOV within each training fold",
+          "probability_calibration": "per-FOV one-vs-rest sigmoid fitted on out-of-fold probabilities"
+        },
+        "hybrid": {
+          "model": "ExtraTreesClassifier",
+          "metrics": {
+            "accuracy": 0.7301587301587301,
+            "macro_precision": 0.6794060981738985,
+            "macro_recall": 0.766652141434263,
+            "macro_f1": 0.6806759770539899,
+            "dr_precision": 0.41732283464566927,
+            "dr_recall": 0.828125,
+            "dr_f2": 0.6919060052219321
+          },
+          "fold_metrics": [
+            {
+              "accuracy": 0.746031746031746,
+              "macro_precision": 0.6826923076923077,
+              "macro_recall": 0.7794117647058824,
+              "macro_f1": 0.6888888888888889,
+              "dr_precision": 0.4166666666666667,
+              "dr_recall": 0.8333333333333334,
+              "dr_f2": 0.6944444444444444
+            },
+            {
+              "accuracy": 0.6666666666666666,
+              "macro_precision": 0.619022869022869,
+              "macro_recall": 0.6761538461538461,
+              "macro_f1": 0.6100795755968169,
+              "dr_precision": 0.34615384615384615,
+              "dr_recall": 0.6923076923076923,
+              "dr_f2": 0.5769230769230769
+            },
+            {
+              "accuracy": 0.7301587301587301,
+              "macro_precision": 0.7,
+              "macro_recall": 0.8015384615384615,
+              "macro_f1": 0.6926829268292682,
+              "dr_precision": 0.42857142857142855,
+              "dr_recall": 0.9230769230769231,
+              "dr_f2": 0.75
+            },
+            {
+              "accuracy": 0.6984126984126984,
+              "macro_precision": 0.6517671517671518,
+              "macro_recall": 0.7246153846153847,
+              "macro_f1": 0.6472148541114058,
+              "dr_precision": 0.38461538461538464,
+              "dr_recall": 0.7692307692307693,
+              "dr_f2": 0.6410256410256411
+            },
+            {
+              "accuracy": 0.8095238095238095,
+              "macro_precision": 0.7483695652173913,
+              "macro_recall": 0.8515384615384616,
+              "macro_f1": 0.7666666666666666,
+              "dr_precision": 0.5217391304347826,
+              "dr_recall": 0.9230769230769231,
+              "dr_f2": 0.8
+            }
+          ],
+          "fold_fov_dr_thresholds": [
+            {
+              "3mm": 0.16999999999999998,
+              "6mm": 0.22999999999999998
+            },
+            {
+              "3mm": 0.15,
+              "6mm": 0.25
+            },
+            {
+              "3mm": 0.18,
+              "6mm": 0.22999999999999998
+            },
+            {
+              "3mm": 0.22,
+              "6mm": 0.22
+            },
+            {
+              "3mm": 0.18,
+              "6mm": 0.25
+            }
+          ],
+          "thresholds_by_fov": {
+            "3mm": 0.19999999999999998,
+            "6mm": 0.26
+          },
+          "confusion_matrix_oof": [
+            [
+              177,
+              74
+            ],
+            [
+              11,
+              53
+            ]
+          ],
+          "class_names": [
+            "NORMAL",
+            "DR"
+          ],
+          "pca_components": 32,
+          "pca_fit": "training rows only within each inner/outer CV fold",
+          "fov_normalization": "z-score fitted separately per FOV within each training fold",
+          "probability_calibration": "per-FOV one-vs-rest sigmoid fitted on out-of-fold probabilities"
+        }
+      }
+    },
+    "multiclass": {
+      "class_names": [
+        "NORMAL",
+        "DR",
+        "OTHER"
+      ],
+      "models": {
+        "cnn_baseline": {
+          "model": "ExtraTreesClassifier",
+          "metrics": {
+            "accuracy": 0.614,
+            "macro_precision": 0.6087798932459126,
+            "macro_recall": 0.6512849502889343,
+            "macro_f1": 0.5903318493258817,
+            "dr_precision": 0.34285714285714286,
+            "dr_recall": 0.75,
+            "dr_f2": 0.6060606060606061
+          },
+          "fold_metrics": [
+            {
+              "accuracy": 0.59,
+              "macro_precision": 0.5570962876465723,
+              "macro_recall": 0.561075781664017,
+              "macro_f1": 0.5360624702721263,
+              "dr_precision": 0.29411764705882354,
+              "dr_recall": 0.4166666666666667,
+              "dr_f2": 0.38461538461538464
+            },
+            {
+              "accuracy": 0.68,
+              "macro_precision": 0.673115773115773,
+              "macro_recall": 0.6753984753984755,
+              "macro_f1": 0.6561591470214726,
+              "dr_precision": 0.5333333333333333,
+              "dr_recall": 0.6153846153846154,
+              "dr_f2": 0.5970149253731343
+            },
+            {
+              "accuracy": 0.5,
+              "macro_precision": 0.5754274773882617,
+              "macro_recall": 0.6081081081081081,
+              "macro_f1": 0.48746010345586616,
+              "dr_precision": 0.2549019607843137,
+              "dr_recall": 1.0,
+              "dr_f2": 0.6310679611650486
+            },
+            {
+              "accuracy": 0.61,
+              "macro_precision": 0.6031903919834954,
+              "macro_recall": 0.6502841302841302,
+              "macro_f1": 0.5881268211178353,
+              "dr_precision": 0.3448275862068966,
+              "dr_recall": 0.7692307692307693,
+              "dr_f2": 0.6172839506172839
+            },
+            {
+              "accuracy": 0.69,
+              "macro_precision": 0.6823273762691544,
+              "macro_recall": 0.7532778932778932,
+              "macro_f1": 0.6731213181077679,
+              "dr_precision": 0.42857142857142855,
+              "dr_recall": 0.9230769230769231,
+              "dr_f2": 0.75
+            }
+          ],
+          "fold_fov_dr_thresholds": [
+            {
+              "3mm": 0.16,
+              "6mm": 0.13
+            },
+            {
+              "3mm": 0.15,
+              "6mm": 0.13
+            },
+            {
+              "3mm": 0.15,
+              "6mm": 0.11
+            },
+            {
+              "3mm": 0.16,
+              "6mm": 0.12000000000000001
+            },
+            {
+              "3mm": 0.16,
+              "6mm": 0.12000000000000001
+            }
+          ],
+          "thresholds_by_fov": {
+            "3mm": 0.16,
+            "6mm": 0.13
+          },
+          "confusion_matrix_oof": [
+            [
+              138,
+              38,
+              75
+            ],
+            [
+              6,
+              48,
+              10
+            ],
+            [
+              10,
+              54,
+              121
+            ]
+          ],
+          "class_names": [
+            "NORMAL",
+            "DR",
+            "OTHER"
+          ],
+          "pca_components": 32,
+          "pca_fit": "training rows only within each inner/outer CV fold",
+          "fov_normalization": "z-score fitted separately per FOV within each training fold",
+          "probability_calibration": "per-FOV one-vs-rest sigmoid fitted on out-of-fold probabilities"
+        },
+        "topology_only": {
+          "model": "ExtraTreesClassifier",
+          "metrics": {
+            "accuracy": 0.548,
+            "macro_precision": 0.5679933104207878,
+            "macro_recall": 0.583794663687592,
+            "macro_f1": 0.5246208770484447,
+            "dr_precision": 0.24571428571428572,
+            "dr_recall": 0.671875,
+            "dr_f2": 0.4988399071925754
+          },
+          "fold_metrics": [
+            {
+              "accuracy": 0.4,
+              "macro_precision": 0.49100713456114153,
+              "macro_recall": 0.4931990814343756,
+              "macro_f1": 0.3776096399047219,
+              "dr_precision": 0.16326530612244897,
+              "dr_recall": 0.6666666666666666,
+              "dr_f2": 0.41237113402061853
+            },
+            {
+              "accuracy": 0.61,
+              "macro_precision": 0.5871749408983451,
+              "macro_recall": 0.6003880803880803,
+              "macro_f1": 0.5712463847327549,
+              "dr_precision": 0.3333333333333333,
+              "dr_recall": 0.5384615384615384,
+              "dr_f2": 0.4794520547945205
+            },
+            {
+              "accuracy": 0.66,
+              "macro_precision": 0.6441616493340631,
+              "macro_recall": 0.7025918225918226,
+              "macro_f1": 0.6356292288604939,
+              "dr_precision": 0.3793103448275862,
+              "dr_recall": 0.8461538461538461,
+              "dr_f2": 0.6790123456790124
+            },
+            {
+              "accuracy": 0.57,
+              "macro_precision": 0.5857771260997068,
+              "macro_recall": 0.5999584199584199,
+              "macro_f1": 0.5446712018140589,
+              "dr_precision": 0.25,
+              "dr_recall": 0.6923076923076923,
+              "dr_f2": 0.5113636363636364
+            },
+            {
+              "accuracy": 0.5,
+              "macro_precision": 0.5308861698183166,
+              "macro_recall": 0.524948024948025,
+              "macro_f1": 0.47810741940720974,
+              "dr_precision": 0.2,
+              "dr_recall": 0.6153846153846154,
+              "dr_f2": 0.43478260869565216
+            }
+          ],
+          "fold_fov_dr_thresholds": [
+            {
+              "3mm": 0.11,
+              "6mm": 0.11
+            },
+            {
+              "3mm": 0.15,
+              "6mm": 0.12000000000000001
+            },
+            {
+              "3mm": 0.18,
+              "6mm": 0.11
+            },
+            {
+              "3mm": 0.16999999999999998,
+              "6mm": 0.11
+            },
+            {
+              "3mm": 0.19999999999999998,
+              "6mm": 0.1
+            }
+          ],
+          "thresholds_by_fov": {
+            "3mm": 0.13,
+            "6mm": 0.11
+          },
+          "confusion_matrix_oof": [
+            [
+              119,
+              68,
+              64
+            ],
+            [
+              11,
+              43,
+              10
+            ],
+            [
+              9,
+              64,
+              112
+            ]
+          ],
+          "class_names": [
+            "NORMAL",
+            "DR",
+            "OTHER"
+          ],
+          "pca_components": null,
+          "pca_fit": "training rows only within each inner/outer CV fold",
+          "fov_normalization": "z-score fitted separately per FOV within each training fold",
+          "probability_calibration": "per-FOV one-vs-rest sigmoid fitted on out-of-fold probabilities"
+        },
+        "hybrid": {
+          "model": "ExtraTreesClassifier",
+          "metrics": {
+            "accuracy": 0.59,
+            "macro_precision": 0.5930385897977838,
+            "macro_recall": 0.623143910843114,
+            "macro_f1": 0.5627509456945687,
+            "dr_precision": 0.2913907284768212,
+            "dr_recall": 0.6875,
+            "dr_f2": 0.5405405405405406
+          },
+          "fold_metrics": [
+            {
+              "accuracy": 0.5,
+              "macro_precision": 0.5130969659271546,
+              "macro_recall": 0.48101042218689277,
+              "macro_f1": 0.4442495126705653,
+              "dr_precision": 0.15384615384615385,
+              "dr_recall": 0.3333333333333333,
+              "dr_f2": 0.2702702702702703
+            },
+            {
+              "accuracy": 0.66,
+              "macro_precision": 0.63782562466773,
+              "macro_recall": 0.6573804573804575,
+              "macro_f1": 0.6272383652256083,
+              "dr_precision": 0.42105263157894735,
+              "dr_recall": 0.6153846153846154,
+              "dr_f2": 0.5633802816901409
+            },
+            {
+              "accuracy": 0.6,
+              "macro_precision": 0.6386904761904763,
+              "macro_recall": 0.6792238392238392,
+              "macro_f1": 0.5857260049220673,
+              "dr_precision": 0.3,
+              "dr_recall": 0.9230769230769231,
+              "dr_f2": 0.6521739130434783
+            },
+            {
+              "accuracy": 0.63,
+              "macro_precision": 0.6306358917315535,
+              "macro_recall": 0.691961191961192,
+              "macro_f1": 0.6114033645679215,
+              "dr_precision": 0.3548387096774194,
+              "dr_recall": 0.8461538461538461,
+              "dr_f2": 0.6626506024096386
+            },
+            {
+              "accuracy": 0.56,
+              "macro_precision": 0.5714285714285715,
+              "macro_recall": 0.597976437976438,
+              "macro_f1": 0.537962962962963,
+              "dr_precision": 0.2571428571428571,
+              "dr_recall": 0.6923076923076923,
+              "dr_f2": 0.5172413793103449
+            }
+          ],
+          "fold_fov_dr_thresholds": [
+            {
+              "3mm": 0.15,
+              "6mm": 0.13
+            },
+            {
+              "3mm": 0.16,
+              "6mm": 0.12000000000000001
+            },
+            {
+              "3mm": 0.15,
+              "6mm": 0.11
+            },
+            {
+              "3mm": 0.13999999999999999,
+              "6mm": 0.11
+            },
+            {
+              "3mm": 0.16999999999999998,
+              "6mm": 0.11
+            }
+          ],
+          "thresholds_by_fov": {
+            "3mm": 0.15,
+            "6mm": 0.11
+          },
+          "confusion_matrix_oof": [
+            [
+              123,
+              59,
+              69
+            ],
+            [
+              9,
+              44,
+              11
+            ],
+            [
+              9,
+              48,
+              128
+            ]
+          ],
+          "class_names": [
+            "NORMAL",
+            "DR",
+            "OTHER"
+          ],
+          "pca_components": 32,
+          "pca_fit": "training rows only within each inner/outer CV fold",
+          "fov_normalization": "z-score fitted separately per FOV within each training fold",
+          "probability_calibration": "per-FOV one-vs-rest sigmoid fitted on out-of-fold probabilities"
+        }
+      }
+    }
+  }
 }

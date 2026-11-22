@@ -5,3 +5,8 @@ scikit-learn
 pandas
 matplotlib
 openpyxl
+fastapi
+uvicorn
+python-multipart
+torch
+torchvision

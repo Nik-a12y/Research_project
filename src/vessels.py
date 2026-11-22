@@ -60,9 +60,11 @@ def segment_vessels(img, min_size=20):
 
     mask = ridge > threshold
 
+    # `max_size` removes objects at or below the limit; subtract one to retain
+    # the historical `min_size` behavior (remove objects strictly smaller).
     mask = remove_small_objects(
         mask.astype(bool),
-        min_size=min_size
+        max_size=min_size - 1
     )
 
     return mask.astype(bool)
